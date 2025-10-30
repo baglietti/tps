@@ -1,0 +1,61 @@
+<script>
+    function mostraDati() {
+        var nome = document.getElementById("nome").value;
+        var cognome = document.getElementById("cognome").value;
+        var indirizzo = document.getElementById("indirizzo").value;
+        var citta = document.getElementById("citta").value;
+        var cap = document.getElementById("cap").value;
+        var anno = document.getElementById("annoNascita").value;
+        var eta = "";
+        var generazione = "";
+
+        if (anno && !isNaN(anno)) {
+            var annoNumero = parseInt(anno);
+            var annoCorrente = new Date().getFullYear();
+            eta = annoCorrente - annoNumero;
+
+            // Sostituzione degli if/else con switch(true)
+            switch (true) {
+                case (annoNumero >= 2013):
+                    generazione = "Generazione Alpha";
+                    break;
+                case (annoNumero >= 1997):
+                    generazione = "Generazione Z";
+                    break;
+                case (annoNumero >= 1981):
+                    generazione = "Millennials";
+                    break;
+                case (annoNumero >= 1965):
+                    generazione = "Generazione X";
+                    break;
+                case (annoNumero >= 1946):
+                    generazione = "Baby Boomers";
+                    break;
+                case (annoNumero >= 1928):
+                    generazione = "Generazione Silenziosa";
+                    break;
+                case (annoNumero >= 1901):
+                    generazione = "Greatest Generation";
+                    break;
+                default:
+                    generazione = "Non classificata";
+            }
+
+        } else {
+            eta = "Anno non valido";
+            generazione = "—";
+        }
+
+        var risultato = "";
+        risultato += "<p><strong>Nome:</strong> " + nome + "</p>";
+        risultato += "<p><strong>Cognome:</strong> " + cognome + "</p>";
+        risultato += "<p><strong>Indirizzo:</strong> " + indirizzo + "</p>";
+        risultato += "<p><strong>Città:</strong> " + citta + "</p>";
+        risultato += "<p><strong>CAP:</strong> " + cap + "</p>";
+        risultato += "<p><strong>Anno di nascita:</strong> " + anno + "</p>";
+        risultato += "<p><strong>Età:</strong> " + eta + "</p>";
+        risultato += "<p><strong>Generazione:</strong> " + generazione + "</p>";
+
+        document.getElementById("output").innerHTML = risultato;
+    }
+</script>

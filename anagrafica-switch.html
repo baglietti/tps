@@ -1,3 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Anagrafica Utente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding: 30px;
+        }
+
+        .contenitore {
+            background-color: white;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2a64c5;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input[type="button"] {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #2a64c5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input[type="button"]:hover {
+            background-color: #1e4e9b;
+        }
+
+        #output {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        #output p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenitore">
+        <h2>Anagrafica Utente</h2>
+
+        <label>Nome:</label>
+        <input type="text" id="nome">
+
+        <label>Cognome:</label>
+        <input type="text" id="cognome">
+
+        <label>Indirizzo:</label>
+        <input type="text" id="indirizzo">
+
+        <label>Città:</label>
+        <input type="text" id="citta">
+
+        <label>CAP:</label>
+        <input type="text" id="cap">
+
+        <label>Anno di nascita:</label>
+        <input type="text" id="annoNascita" placeholder="Es: 1985">
+
+        <input type="button" value="Mostra dati" onclick="mostraDati()">
+
+        <div id="output">
+            I tuoi dati appariranno qui.
+        </div>
+    </div>
 <script>
     function mostraDati() {
         var nome = document.getElementById("nome").value;

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Subnet Mask</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f8ff;
+      text-align: center;
+      padding-top: 60px;
+    }
+    h2 {
+      color: #00ffe1;
+    }
+    label {
+      font-size: 18px;
+      color: #333;
+    }
+    input {
+      padding: 6px;
+      font-size: 16px;
+      width: 60px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 16px;
+      background-color: #00ffe1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00d5ff;
+    }
+    p {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #222;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Genera Subnet Mask</h2>
+  
+  <label>Prefix number: </label>
+  <input type="number" id="prefix" min="0" max="32">
+  <button onclick="generaMask()">Genera</button>
+  
+  <p id="risultato"></p>
+
+  <script>
+    function generaMask() {
+      let prefix = parseInt(document.getElementById("prefix").value);
+      let maskBinaria = "";
+      for (let i = 1; i <= 32; i++) {
+        if (i <= prefix) {
+          maskBinaria += "1";
+        } else {
+          maskBinaria += "0";
+        }
+        if (i % 8 === 0 && i < 32) {
+          maskBinaria += ".";
+        }
+      }
+      document.getElementById("risultato").innerText = "Subnet mask binaria: " + maskBinaria;
+    }
+  </script>
+</body>
+</html>

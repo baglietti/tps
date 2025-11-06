@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>convertitore da Decimale a Binario</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #333;
+    }
+    input {
+      margin: 5px;
+      padding: 5px;
+      width: 70px;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #ff9900;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff4d00;
+    }
+    #risultato {
+      margin-top: 10px;
+      font-family: monospace;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <h2>convertitore</h2>
+
+  <input type="number" id="num1" min="0" max="255" placeholder="0-255">
+  <input type="number" id="num2" min="0" max="255" placeholder="0-255">
+  <input type="number" id="num3" min="0" max="255" placeholder="0-255">
+  <input type="number" id="num4" min="0" max="255" placeholder="0-255">
+  
+  <br><br>
+  <button onclick="converti()">Converti</button>
+
+  <h3>Risultato:</h3>
+  <p id="risultato"></p>
+
+  <script>
+    function converti() {
+      let numeri = [
+        document.getElementById("num1").value,
+        document.getElementById("num2").value,
+        document.getElementById("num3").value,
+        document.getElementById("num4").value
+      ];
+
+      let binari = "";
+
+      for (let i = 0; i < numeri.length; i++) {
+        let n = parseInt(numeri[i]);
+
+        if (isNaN(n) || n < 0 || n > 255) {
+          binari += "Errore ";
+        } else {
+          let bin = n.toString(2).padStart(8, "0");
+          binari += bin + " ";
+        }
+      }
+
+      document.getElementById("risultato").innerText = binari;
+    }
+  </script>
+</body>
+</html>

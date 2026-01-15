@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<input id="display" readonly><br><br>
+
+<button onclick="scrivi('7')">7</button>
+<button onclick="scrivi('8')">8</button>
+<button onclick="scrivi('9')">9</button>
+<button onclick="operatore('/')">/</button><br>
+
+<button onclick="scrivi('4')">4</button>
+<button onclick="scrivi('5')">5</button>
+<button onclick="scrivi('6')">6</button>
+<button onclick="operatore('*')">*</button><br>
+
+<button onclick="scrivi('1')">1</button>
+<button onclick="scrivi('2')">2</button>
+<button onclick="scrivi('3')">3</button>
+<button onclick="operatore('-')">-</button><br>
+
+<button onclick="scrivi('0')">0</button>
+<button onclick="scrivi('.')">.</button>
+<button onclick="calcola()">=</button>
+<button onclick="operatore('+')">+</button><br><br>
+
+<button onclick="potenza()">x²</button>
+<button onclick="radice()">√</button>
+<button onclick="percentuale()">%</button><br><br>
+
+<button onclick="seno()">sin</button>
+<button onclick="coseno()">cos</button>
+<button onclick="tangente()">tan</button><br><br>
+
+<button onclick="cancella()">C</button>
+
+<script>
+var numeri = [];
+var display = document.getElementById("display");
+
+function scrivi(valore) {
+    display.value = display.value + valore;
+}
+
+function operatore(op) {
+    numeri.push(parseFloat(display.value));
+    numeri.push(op);
+    display.value = "";
+}
+
+function calcola() {
+    numeri.push(parseFloat(display.value));
+    var risultato = numeri[0];
+    var i = 1;
+
+    while (i < numeri.length) {
+        if (numeri[i] == "+") risultato = risultato + numeri[i + 1];
+        if (numeri[i] == "-") risultato = risultato - numeri[i + 1];
+        if (numeri[i] == "*") risultato = risultato * numeri[i + 1];
+        if (numeri[i] == "/") risultato = risultato / numeri[i + 1];
+        i = i + 2;
+    }
+
+    display.value = risultato;
+    numeri = [];
+}
+
+function potenza() {
+    display.value = Math.pow(parseFloat(display.value), 2);
+}
+
+function radice() {
+    display.value = Math.sqrt(parseFloat(display.value));
+}
+
+function percentuale() {
+    display.value = parseFloat(display.value) / 100;
+}
+
+function seno() {
+    display.value = Math.sin(parseFloat(display.value));
+}
+
+function coseno() {
+    display.value = Math.cos(parseFloat(display.value));
+}
+
+function tangente() {
+    display.value = Math.tan(parseFloat(display.value));
+}
+
+function cancella() {
+    display.value = "";
+    numeri = [];
+}
+</script>
+
+</body>
+</html>

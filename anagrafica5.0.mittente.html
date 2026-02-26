@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Anagrafica</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Anagrafica</h1>
+
+<h2>Dati personali</h2>
+Nome:<br>
+<input type="text" id="nome"><br>
+
+Cognome:<br>
+<input type="text" id="cognome"><br>
+
+Anno di nascita:<br>
+<input type="number" id="nascita"><br>
+
+<h2>Luogo di residenza</h2>
+Regione:<br>
+<select id="regione">
+    <option value="">Seleziona regione</option>
+    <option>Abruzzo</option>
+    <option>Basilicata</option>
+    <option>Calabria</option>
+    <option>Campania</option>
+    <option>Emilia-Romagna</option>
+    <option>Friuli-Venezia Giulia</option>
+    <option>Lazio</option>
+    <option>Liguria</option>
+    <option>Lombardia</option>
+    <option>Marche</option>
+    <option>Molise</option>
+    <option>Piemonte</option>
+    <option>Puglia</option>
+    <option>Sardegna</option>
+    <option>Sicilia</option>
+    <option>Toscana</option>
+    <option>Trentino-Alto Adige</option>
+    <option>Umbria</option>
+    <option>Valle d'Aosta</option>
+    <option>Veneto</option>
+</select><br>
+
+Indirizzo:<br>
+<input type="text" id="indirizzo"><br>
+
+CAP:<br>
+<input type="text" id="cap"><br>
+
+Email:<br>
+<input type="text" id="email"><br>
+
+<h2>Genere</h2>
+<input type="radio" name="genere" value="Femmina"> Femmina<br>
+<input type="radio" name="genere" value="Maschio"> Maschio<br>
+<input type="radio" name="genere" value="Altro"> Altro<br>
+
+<h2>Mezzi posseduti</h2>
+<input type="checkbox" class="mezzo" value="Bicicletta"> Bicicletta<br>
+<input type="checkbox" class="mezzo" value="Automobile"> Automobile<br>
+<input type="checkbox" class="mezzo" value="Moto"> Moto<br>
+<input type="checkbox" class="mezzo" value="Barca"> Barca<br>
+<input type="checkbox" class="mezzo" value="Monopattino"> Monopattino<br>
+<input type="checkbox" class="mezzo" value="Camper"> Camper<br>
+<input type="checkbox" class="mezzo" value="Scooter"> Scooter<br>
+
+<h2>Sport</h2>
+<select id="sport" multiple>
+    <option>Atletica</option>
+    <option>Pallavolo</option>
+    <option>Nuoto</option>
+    <option>Calcio</option>
+    <option>Tennis</option>
+    <option>Basket</option>
+    <option>Rugby</option>
+    <option>Hockey</option>
+    <option>Pallanuoto</option>
+    <option>Ciclismo</option>
+    <option>Equitazione</option>
+    <option>Arti marziali</option>
+    <option>Boxe</option>
+    <option>Danza</option>
+    <option>Golf</option>
+    <option>Sci</option>
+    <option>Snowboard</option>
+</select>
+
+<br><br>
+<input type="button" value="Inserisci" onclick="salva()">
+<input type="button" value="Svuota elenco" onclick="svuota()">
+<br><br>
+
+<a href="stampa.html">Stampa</a>
+
+<script>
+let elenco = [];
+
+function salva() {
+
+    if (!document.getElementById("nome").value.match(/^[A-Za-z\s]+$/)) {
+        alert("Nome non valido");
+        return;
+    }
+
+    if (!document.getElementById("cognome").value.match(/^[A-Za-z\s]+$/)) {
+        alert("Cognome non valido");
+        return;
+    }
+
+    if (!document.getElementById("cap").value.match(/^[0-9]+$/)) {
+        alert("CAP non valido");
+        return;
+    }
+
+    if (!document.getElementById("email").value.match(/^.+@.+\.[A-Za-z]{2,6}$/)) {
+        alert("Email non valida");
+        return;
+    }
+
+    let dati = localStorage.getItem("elenco");
+    if (dati != null) elenco = JSON.parse(dati);
+
+    let persona = {};
+    persona.nome = document.getElementById("nome").value;
+    persona.cognome = document.getElementById("cognome").value;
+    persona.nascita = document.getElementById("nascita").value;
+    persona.regione = document.getElementById("regione").value;
+    persona.indirizzo = document.getElementById("indirizzo").value;
+    persona.cap = document.getElementById("cap").value;
+    persona.email = document.getElementById("email").value;
+
+    let generi = document.getElementsByName("genere");
+    persona.genere = "";
+    for (let i = 0; i < generi.length; i++) {
+        if (generi[i].checked) {
+            persona.genere = generi[i].value;
+            break;
+        }
+    }
+
+    persona.mezzi = [];
+    let mezzi = document.getElementsByClassName("mezzo");
+    for (let i = 0; i < mezzi.length; i++) {
+        if (mezzi[i].checked) persona.mezzi.push(mezzi[i].value);
+    }
+
+    persona.sport = [];
+    let sportOpt = document.getElementById("sport").options;
+    for (let i = 0; i < sportOpt.length; i++) {
+        if (sportOpt[i].selected) persona.sport.push(sportOpt[i].value);
+    }
+
+    elenco.push(persona);
+    localStorage.setItem("elenco", JSON.stringify(elenco));
+    
+}
+
+function svuota() {
+    localStorage.removeItem("elenco");
+}
+
+</script>
+
+</body>
+</html>

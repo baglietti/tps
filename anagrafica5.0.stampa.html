@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Stampa Anagrafica</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Elenco persone</h1>
+
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Cognome</th>
+        <th>Anno nascita</th>
+        <th>Regione</th>
+        <th>Indirizzo</th>
+        <th>CAP</th>
+        <th>Email</th>
+        <th>Genere</th>
+        <th>Mezzi posseduti</th>
+        <th>Sport</th>
+    </tr>
+</table>
+
+<script>
+let tab = document.getElementsByTagName("table")[0];
+let elenco = JSON.parse(localStorage.getItem("elenco"));
+
+if (elenco != null) {
+    for (let i = 0; i < elenco.length; i++) {
+
+        let tr = document.createElement("tr");
+
+        let tdNome = document.createElement("td");
+        tdNome.textContent = elenco[i].nome;
+
+        let tdCognome = document.createElement("td");
+        tdCognome.textContent = elenco[i].cognome;
+
+        let tdNascita = document.createElement("td");
+        tdNascita.textContent = elenco[i].nascita;
+
+        let tdRegione = document.createElement("td");
+        tdRegione.textContent = elenco[i].regione;
+
+        let tdIndirizzo = document.createElement("td");
+        tdIndirizzo.textContent = elenco[i].indirizzo;
+
+        let tdCAP = document.createElement("td");
+        tdCAP.textContent = elenco[i].cap;
+
+        let tdEmail = document.createElement("td");
+        tdEmail.textContent = elenco[i].email;
+
+        let tdGenere = document.createElement("td");
+        tdGenere.textContent = elenco[i].genere;
+
+        let tdMezzi = document.createElement("td");
+        tdMezzi.textContent = elenco[i].mezzi.join(", ");
+
+        let tdSport = document.createElement("td");
+        tdSport.textContent = elenco[i].sport.join(", ");
+
+        tr.appendChild(tdNome);
+        tr.appendChild(tdCognome);
+        tr.appendChild(tdNascita);
+        tr.appendChild(tdRegione);
+        tr.appendChild(tdIndirizzo);
+        tr.appendChild(tdCAP);
+        tr.appendChild(tdEmail);
+        tr.appendChild(tdGenere);
+        tr.appendChild(tdMezzi);
+        tr.appendChild(tdSport);
+
+        tab.appendChild(tr);
+    }
+}
+</script>
+
+</body>
+</html>

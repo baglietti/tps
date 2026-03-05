@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Stampa Anagrafica</title>
-    
 </head>
+
 <body>
 
 <h1>Elenco persone</h1>
 
-<table>
+<table id="tabellaPersone" border="1">
     <tr>
         <th>Nome</th>
         <th>Cognome</th>
@@ -25,10 +25,12 @@
 </table>
 
 <script>
-let tab = document.getElementsByTagName("table")[0];
+
+let tab = document.getElementById("tabellaPersone");
 let elenco = JSON.parse(localStorage.getItem("elenco"));
 
 if (elenco != null) {
+
     for (let i = 0; i < elenco.length; i++) {
 
         let tr = document.createElement("tr");
@@ -77,6 +79,7 @@ if (elenco != null) {
         tab.appendChild(tr);
     }
 }
+
 </script>
 
 </body>

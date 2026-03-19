@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Archivio CSV</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>ANAGRAFICA 6</h1>
+  
+  <div id="box-caricamento">
+    <h2>scegli il file anagrafica</h2>
+    <input type="file" id="fileInput" accept=".csv">
+  </div>
+
+  <pre id="output">dopo che avrai scelto il file, qui sotto apparirà il testo</pre>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const output = document.getElementById("output");
+
+    fileInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const testo = e.target.result;
+        output.innerHTML = ""; 
+        parseCSV(testo);
+      };
+      reader.readAsText(file);
+    });
+
+    function parseCSV(testo) { 
+      const righe = testo.split("\n"); 
+      for (var i = 0; i < righe.length; i++) {
+        output.innerHTML += righe[i] + "<br>";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -25,7 +25,7 @@ e.target.value.toLowerCase()
 
 function loadCSV(){
 
-Papa.parse("products.csv",{
+Papa.parse("product.csv",{
 
 download:true,
 

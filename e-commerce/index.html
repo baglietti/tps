@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Catalogo Prodotti</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+
+<header>
+<h1 id="shopTitle">Catalogo</h1>
+
+<div class="topbar">
+
+<input
+type="text"
+id="search"
+placeholder="Cerca..."
+>
+
+<button onclick="showBasket()">
+🛒 Carrello
+<span id="cartCount">0</span>
+</button>
+
+</div>
+</header>
+
+<main>
+
+<div id="products" class="grid"></div>
+
+<div id="details" class="hidden"></div>
+
+<div id="basket" class="hidden"></div>
+
+</main>
+
+<script src="app.js"></script>
+
+</body>
+</html>

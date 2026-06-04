@@ -8,26 +8,14 @@ updateCartCount();
 loadCSV();
 
 document
-.getElementById("search")
-.addEventListener("input", e => {
+.getElementById("csvFile")
+.addEventListener("change", loadCSV);
 
-renderProducts(
-products.filter(p =>
-JSON.stringify(p)
-.toLowerCase()
-.includes(
-e.target.value.toLowerCase()
-)
-)
-);
+function loadCSV(event){
 
-});
+const file = event.target.files[0];
 
-function loadCSV(){
-
-Papa.parse("product.csv",{
-
-download:true,
+Papa.parse(file,{
 
 header:true,
 

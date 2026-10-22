@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Tabella Andamento Nazionale COVID-19</title>
+
+    <style type="text/css">
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #e4a4fc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #c409f3;
+            color: #fff700;
+        }
+
+        tr.pari {
+            background-color: #f9f9f9;
+        }
+
+        #dati-container {
+            margin-top: 15px;
+            overflow-x: auto;
+        }
+
+        .errore {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Tabella Andamento Nazionale COVID-19</h2>
+
+    <div id="dati-container">Caricamento dati in corso...</div>
+
+    <script type="text/javascript">
+
+        var url = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
+
+        // Creazione dell'oggetto XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", url, true);
+
+        xhr.onreadystatechange = function() {
+
+            if (xhr.readyState === 4) {
+
+                var contenitore =
+                    document.getElementById("dati-container");
+
+                if (xhr.status === 200) {
+
+                    try {
+
+                        // Lettura della risposta JSON
+                        var dati = JSON.parse(xhr.responseText);
+
+                        if (dati.length === 0) {
+                            contenitore.textContent =
+                                "Nessun dato disponibile.";
+                            return;
+                        }
+
+                        // Primo oggetto della risposta
+                        var obj = dati[0];
+
+                        // Numero delle chiavi dell'oggetto
+                        var numeroChiavi = Object.keys(obj).length;
+
+                        // Collection dinamica delle chiavi
+                        var keys = Object.keys(obj);
+
+                        // Creazione della tabella
+                        var tabella = document.createElement("table");
+                        var thead = document.createElement("thead");
+                        var tbody = document.createElement("tbody");
+
+                        // Creazione dinamica delle intestazioni
+                        var trIntestazione =
+                            document.createElement("tr");
+
+                        for (var i = 0; i < numeroChiavi; i++) {
+
+                            var th = document.createElement("th");
+
+                            th.textContent = keys[i];
+
+                            trIntestazione.appendChild(th);
+                        }
+
+                        thead.appendChild(trIntestazione);
+                        tabella.appendChild(thead);
+
+                        // Creazione dinamica delle righe
+                        for (var i = 0; i < dati.length; i++) {
+
+                            var row = dati[i];
+                            var tr = document.createElement("tr");
+
+                            if (i % 2 === 0) {
+                                tr.className = "pari";
+                            }
+
+                            // Utilizzo della collection di chiavi
+                            for (var j = 0; j < numeroChiavi; j++) {
+
+                                var td = document.createElement("td");
+
+                                var chiave = keys[j];
+                                var valore = row[chiave];
+
+                                td.textContent =
+                                    valore !== undefined &&
+                                    valore !== null
+                                    ? valore
+                                    : "";
+
+                                tr.appendChild(td);
+                            }
+
+                            tbody.appendChild(tr);
+                        }
+
+                        tabella.appendChild(tbody);
+
+                        // Visualizzazione della tabella
+                        contenitore.textContent = "";
+                        contenitore.appendChild(tabella);
+
+                    } catch (errore) {
+
+                        contenitore.textContent =
+                            "Errore durante l'elaborazione dei dati.";
+
+                        contenitore.className = "errore";
+                    }
+
+                } else {
+
+                    contenitore.textContent =
+                        "Errore HTTP: " + xhr.status;
+
+                    contenitore.className = "errore";
+                }
+            }
+        };
+
+        // Gestione degli errori di rete
+        xhr.onerror = function() {
+
+            var contenitore =
+                document.getElementById("dati-container");
+
+            contenitore.textContent =
+                "Errore di rete durante il caricamento.";
+
+            contenitore.className = "errore";
+        };
+
+        // Invio della richiesta
+        xhr.send();
+
+    </script>
+
+</body>
+</html>

@@ -130,11 +130,11 @@
                 }
                 maxValore = Math.ceil(maxValore / 50) * 50;
 
-                // Griglia e assi
+            
                 ctx.strokeStyle = "#edf2f7";
                 ctx.lineWidth = 1;
                 
-                // Linee di griglia orizzontali
+            
                 var righeGriglia = 5;
                 for (var g = 0; g <= righeGriglia; g++) {
                     var yGriglia = padding + (graficoHeight / righeGriglia) * g;
@@ -144,7 +144,7 @@
                     ctx.stroke();
                 }
 
-                // Asse principale
+            
                 ctx.strokeStyle = "#cbd5e1";
                 ctx.beginPath();
                 ctx.moveTo(padding, padding);
@@ -154,7 +154,6 @@
 
                 var stepX = graficoWidth / (datiMensili.length - 1);
 
-                // Disegno della linea del grafico
                 ctx.strokeStyle = "#8e24aa";
                 ctx.lineWidth = 3;
                 ctx.beginPath();
@@ -171,7 +170,7 @@
                 }
                 ctx.stroke();
 
-                // Disegno dei punti e delle etichette
+           
                 for (var i = 0; i < datiMensili.length; i++) {
                     var x = padding + (i * stepX);
                     var y = height - padding - ((datiMensili[i].valore_medio_pun / maxValore) * graficoHeight);
@@ -187,7 +186,7 @@
                     ctx.arc(x, y, 4, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Etichette asse X
+          
                     ctx.save();
                     ctx.translate(x, height - padding + 15);
                     ctx.rotate(-Math.PI / 4);

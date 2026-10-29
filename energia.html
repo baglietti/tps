@@ -2,44 +2,89 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grafico Andamento PUN - Energia Elettrica</title>
 
     <style type="text/css">
+        :root {
+            --primary-color: #8e24aa;
+            --primary-light: #c158dc;
+            --primary-dark: #5c007a;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --border-color: #e2e8f0;
+        }
+
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 25px;
         }
 
         h2 {
-            color: #333;
+            color: var(--text-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin: 0;
         }
 
         #dati-container {
-            margin-top: 15px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border-color);
+            max-width: 960px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         canvas {
             display: block;
             margin: 0 auto;
-            background-color: #fff;
-            border: 1px solid #e4a4fc;
+            background-color: #ffffff;
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
         }
 
         .errore {
-            color: red;
-            font-weight: bold;
+            color: #e53e3e;
+            font-weight: 600;
+            padding: 20px;
+            background-color: #fff5f5;
+            border-radius: 8px;
+            border: 1px solid #fed7d7;
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
 
-    <h2>Grafico Andamento PUN (Prezzo Unico Nazionale)</h2>
+    <div class="header-container">
+        <h2>Grafico Andamento PUN (Prezzo Unico Nazionale)</h2>
+        <p class="subtitle">Monitoraggio e variazione del valore medio dell'energia elettrica</p>
+    </div>
 
     <div id="dati-container">
         <canvas id="graficoCanvas" width="900" height="450"></canvas>
@@ -48,7 +93,6 @@
     <script type="text/javascript">
 
         var url = "andamento_costo_energia_italia.json";
-    
 
         var xhr = new XMLHttpRequest();
 
@@ -86,8 +130,22 @@
                 }
                 maxValore = Math.ceil(maxValore / 50) * 50;
 
-                ctx.strokeStyle = "#ccc";
+                // Griglia e assi
+                ctx.strokeStyle = "#edf2f7";
                 ctx.lineWidth = 1;
+                
+                // Linee di griglia orizzontali
+                var righeGriglia = 5;
+                for (var g = 0; g <= righeGriglia; g++) {
+                    var yGriglia = padding + (graficoHeight / righeGriglia) * g;
+                    ctx.beginPath();
+                    ctx.moveTo(padding, yGriglia);
+                    ctx.lineTo(width - padding, yGriglia);
+                    ctx.stroke();
+                }
+
+                // Asse principale
+                ctx.strokeStyle = "#cbd5e1";
                 ctx.beginPath();
                 ctx.moveTo(padding, padding);
                 ctx.lineTo(padding, height - padding);
@@ -96,8 +154,9 @@
 
                 var stepX = graficoWidth / (datiMensili.length - 1);
 
-                ctx.strokeStyle = "#c409f3";
-                ctx.lineWidth = 2;
+                // Disegno della linea del grafico
+                ctx.strokeStyle = "#8e24aa";
+                ctx.lineWidth = 3;
                 ctx.beginPath();
 
                 for (var i = 0; i < datiMensili.length; i++) {
@@ -109,23 +168,35 @@
                     } else {
                         ctx.lineTo(x, y);
                     }
+                }
+                ctx.stroke();
 
-                    ctx.fillStyle = "#c409f3";
+                // Disegno dei punti e delle etichette
+                for (var i = 0; i < datiMensili.length; i++) {
+                    var x = padding + (i * stepX);
+                    var y = height - padding - ((datiMensili[i].valore_medio_pun / maxValore) * graficoHeight);
+
+                    // Punti dati con bordo esterno chiaro
+                    ctx.fillStyle = "#ffffff";
+                    ctx.beginPath();
+                    ctx.arc(x, y, 6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.fillStyle = "#8e24aa";
                     ctx.beginPath();
                     ctx.arc(x, y, 4, 0, Math.PI * 2);
                     ctx.fill();
 
+                    // Etichette asse X
                     ctx.save();
                     ctx.translate(x, height - padding + 15);
                     ctx.rotate(-Math.PI / 4);
-                    ctx.fillStyle = "#333";
-                    ctx.font = "10px Arial";
+                    ctx.fillStyle = "#64748b";
+                    ctx.font = "500 11px 'Segoe UI', sans-serif";
                     ctx.textAlign = "right";
                     ctx.fillText(datiMensili[i].mese + " " + datiMensili[i].anno, 0, 0);
                     ctx.restore();
                 }
-
-                ctx.stroke();
 
             } else {
                 contenitore.textContent = "Errore HTTP: " + xhr.status;

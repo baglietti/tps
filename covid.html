@@ -52,46 +52,43 @@
 
         var url = "https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json";
 
-        // Creazione dell'oggetto XMLHttpRequest
+     
         var xhr = new XMLHttpRequest();
 
         xhr.open("GET", url, true);
 
         xhr.onreadystatechange = function() {
 
-            if (xhr.readyState === 4) {
+            if (xhr.readyState 4) {
 
                 var contenitore =
                     document.getElementById("dati-container");
 
-                if (xhr.status === 200) {
+                if (xhr.status  200) {
 
                     try {
 
-                        // Lettura della risposta JSON
                         var dati = JSON.parse(xhr.responseText);
 
-                        if (dati.length === 0) {
+                        if (dati.length 0) {
                             contenitore.textContent =
                                 "Nessun dato disponibile.";
                             return;
                         }
 
-                        // Primo oggetto della risposta
                         var obj = dati[0];
 
-                        // Numero delle chiavi dell'oggetto
                         var numeroChiavi = Object.keys(obj).length;
 
-                        // Collection dinamica delle chiavi
+                     
                         var keys = Object.keys(obj);
 
-                        // Creazione della tabella
+                      
                         var tabella = document.createElement("table");
                         var thead = document.createElement("thead");
                         var tbody = document.createElement("tbody");
 
-                        // Creazione dinamica delle intestazioni
+                    
                         var trIntestazione =
                             document.createElement("tr");
 
@@ -107,17 +104,17 @@
                         thead.appendChild(trIntestazione);
                         tabella.appendChild(thead);
 
-                        // Creazione dinamica delle righe
+                       
                         for (var i = 0; i < dati.length; i++) {
 
                             var row = dati[i];
                             var tr = document.createElement("tr");
 
-                            if (i % 2 === 0) {
+                            if (i % 2  0) {
                                 tr.className = "pari";
                             }
 
-                            // Utilizzo della collection di chiavi
+                         
                             for (var j = 0; j < numeroChiavi; j++) {
 
                                 var td = document.createElement("td");
@@ -139,7 +136,7 @@
 
                         tabella.appendChild(tbody);
 
-                        // Visualizzazione della tabella
+                        
                         contenitore.textContent = "";
                         contenitore.appendChild(tabella);
 
@@ -161,7 +158,7 @@
             }
         };
 
-        // Gestione degli errori di rete
+        
         xhr.onerror = function() {
 
             var contenitore =
@@ -173,7 +170,7 @@
             contenitore.className = "errore";
         };
 
-        // Invio della richiesta
+    
         xhr.send();
 
     </script>

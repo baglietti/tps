@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Grafico Andamento PUN - Energia Elettrica</title>
+
+    <style type="text/css">
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        #dati-container {
+            margin-top: 15px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #e4a4fc;
+        }
+
+        .errore {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Grafico Andamento PUN (Prezzo Unico Nazionale)</h2>
+
+    <div id="dati-container">
+        <canvas id="graficoCanvas" width="900" height="450"></canvas>
+    </div>
+
+    <script type="text/javascript">
+
+        var url = "dati.json";
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("GET", url, true);
+        xhr.responseType = "json";
+
+        xhr.onload = function() {
+            var contenitore = document.getElementById("dati-container");
+
+            if (xhr.status === 200) {
+                var risposta = xhr.response;
+
+                if (!risposta || !risposta.andamento_mensile || risposta.andamento_mensile.length === 0) {
+                    contenitore.textContent = "Nessun dato disponibile.";
+                    return;
+                }
+
+                var datiMensili = risposta.andamento_mensile;
+                var canvas = document.getElementById("graficoCanvas");
+                var ctx = canvas.getContext("2d");
+
+                var width = canvas.width;
+                var height = canvas.height;
+                var padding = 60;
+                var graficoWidth = width - (padding * 2);
+                var graficoHeight = height - (padding * 2);
+
+                ctx.clearRect(0, 0, width, height);
+
+                var maxValore = 0;
+                for (var i = 0; i < datiMensili.length; i++) {
+                    if (datiMensili[i].valore_medio_pun > maxValore) {
+                        maxValore = datiMensili[i].valore_medio_pun;
+                    }
+                }
+                maxValore = Math.ceil(maxValore / 50) * 50;
+
+                ctx.strokeStyle = "#ccc";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, height - padding);
+                ctx.lineTo(width - padding, height - padding);
+                ctx.stroke();
+
+                var stepX = graficoWidth / (datiMensili.length - 1);
+
+                ctx.strokeStyle = "#c409f3";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                for (var i = 0; i < datiMensili.length; i++) {
+                    var x = padding + (i * stepX);
+                    var y = height - padding - ((datiMensili[i].valore_medio_pun / maxValore) * graficoHeight);
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+
+                    ctx.fillStyle = "#c409f3";
+                    ctx.beginPath();
+                    ctx.arc(x, y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.save();
+                    ctx.translate(x, height - padding + 15);
+                    ctx.rotate(-Math.PI / 4);
+                    ctx.fillStyle = "#333";
+                    ctx.font = "10px Arial";
+                    ctx.textAlign = "right";
+                    ctx.fillText(datiMensili[i].mese + " " + datiMensili[i].anno, 0, 0);
+                    ctx.restore();
+                }
+
+                ctx.stroke();
+
+            } else {
+                contenitore.textContent = "Errore HTTP: " + xhr.status;
+                contenitore.className = "errore";
+            }
+        };
+
+        xhr.onerror = function() {
+            var contenitore = document.getElementById("dati-container");
+            contenitore.textContent = "Errore di rete durante il caricamento.";
+            contenitore.className = "errore";
+        };
+
+        xhr.send();
+
+    </script>
+
+</body>
+</html>
